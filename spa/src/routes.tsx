@@ -13,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import { isBefore } from "date-fns";
 import { Login } from "./features/login";
 import { Home } from "./features/home";
+import { DefaultLayout } from "./layout/default.layout";
 
 export interface Payload {
 	exp: number;
@@ -35,7 +36,7 @@ export const AppRoutes = () => {
 			<Route
 				element={
 					<RequireAuth>
-						<></>
+						<DefaultLayout />
 					</RequireAuth>
 				}
 				path="/">
