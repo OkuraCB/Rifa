@@ -37,3 +37,29 @@ model User {
 
   @@map("users")
 }
+
+model Seat {
+  id        Int       @id @default(autoincrement())
+
+  seat      Int
+  state     String
+  rifa      Rifa      @relation(fields: [rifaId], references: [id], onDelete: Cascade)
+  rifaId    Int       @map("rifa_id")  
+
+  @@index([rifaId])
+  @@map("seats")
+}
+
+model Rifa {
+  id        Int       @id @default(autoincrement())
+
+  createdAt DateTime  @default(now()) @map("create_time") @db.Timestamp(0)
+  updatedAt DateTime? @map("update_time") @db.Timestamp(0)
+
+  name      String    @db.VarChar(100)
+  end       DateTime  @db.Timestamp(0)
+
+  seats     Seat[]
+
+  @@map("rifas")
+}
