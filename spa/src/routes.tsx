@@ -12,8 +12,10 @@ import { login, selectUser } from "./features/users/usersSlice";
 import { jwtDecode } from "jwt-decode";
 import { isBefore } from "date-fns";
 import { Login } from "./features/login";
-import { Home } from "./features/home";
 import { DefaultLayout } from "./layout/default.layout";
+import { Home } from "./features/home";
+import { Rifas } from "./features/rifas";
+import { Buy } from "./features/buy";
 
 export interface Payload {
 	exp: number;
@@ -25,6 +27,8 @@ export interface Payload {
 export const AppRoutes = () => {
 	return (
 		<Routes>
+			<Route path="/home" element={<Home />} />
+			<Route path="/buy" element={<Buy />} />
 			<Route
 				element={
 					<CheckLogin>
@@ -40,7 +44,7 @@ export const AppRoutes = () => {
 					</RequireAuth>
 				}
 				path="/">
-				<Route path="/" element={<Home />} />
+				<Route path="/rifas" element={<Rifas />} />
 			</Route>
 		</Routes>
 	);
@@ -56,7 +60,7 @@ const CheckLogin = ({ children }: { children: JSX.Element }) => {
 	if (user.logged)
 		return (
 			<Navigate
-				to={searchParams.get("redirect") || "/"}
+				to={searchParams.get("redirect") || "/rifas"}
 				state={{ from: location }}
 				replace
 			/>

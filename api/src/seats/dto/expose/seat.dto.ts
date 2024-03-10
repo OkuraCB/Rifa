@@ -8,5 +8,8 @@ export class SeatDto {
   seat: number;
 
   @Expose()
-  state: string;
+  pago: boolean;
+
+  @Expose()
+  name: string;
 }

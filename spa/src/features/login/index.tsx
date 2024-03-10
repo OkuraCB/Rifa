@@ -27,7 +27,7 @@ export const Login = () => {
 
 			localStorage.setItem(process.env.REACT_TOKEN!, req.data.access_token);
 
-			navigate("/");
+			navigate("/rifas");
 		} catch (e) {
 			console.log(e);
 		} finally {
@@ -38,10 +38,12 @@ export const Login = () => {
 	return (
 		<Container maxWidth="lg">
 			<Grid container spacing={2}>
-				<Grid item xs={5}>
+				<Grid item xs={12}>
 					<Box p={4}>
-						<h4 style={{ marginTop: "6px" }}>Rifa</h4>
-						<h4 style={{ marginBottom: "12px" }}>Rifa pra mãe</h4>
+						<h1 style={{ marginTop: "6px" }}>Login</h1>
+						<h5 style={{ marginBottom: "12px" }}>
+							Para criar uma rifa, você precisa estar cadastrado.
+						</h5>
 						{loading && (
 							<Box>
 								<LinearProgress />
@@ -51,36 +53,43 @@ export const Login = () => {
 							<TextField
 								margin="normal"
 								required
-								fullWidth
 								label="Email"
 								autoFocus
 								value={email}
 								variant="outlined"
 								InputLabelProps={{ shrink: true }}
-								placeholder="Your email"
+								placeholder="Seu email"
 								onChange={(event) => setEmail(event.target.value)}
 								disabled={loading}
 							/>
+							<br />
 							<TextField
 								margin="normal"
 								required
-								fullWidth
-								label="Password"
+								label="Senha"
 								autoFocus
 								value={pass}
 								variant="outlined"
 								InputLabelProps={{ shrink: true }}
-								placeholder="Your password"
+								placeholder="Sua senha"
 								onChange={(event) => setPass(event.target.value)}
 								disabled={loading}
 							/>
+							<br />
 							<Button
 								type="submit"
 								variant="contained"
 								size="large"
-								fullWidth
-								disabled={loading}>
-								Sign In
+								disabled={loading}
+								style={{ marginRight: 43 }}>
+								Entrar
+							</Button>
+							<Button
+								variant="contained"
+								size="large"
+								onClick={() => navigate("/home")}
+								color="secondary">
+								Voltar
 							</Button>
 						</form>
 					</Box>

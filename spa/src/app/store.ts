@@ -1,9 +1,10 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
-import rifasReducer from "../features/home/homeSlice";
+import buyReducer from "../features/buy/buySlice";
+import rifasReducer from "../features/rifas/rifasSlice";
 import userReducer from "../features/users/usersSlice";
 
 export const store = configureStore({
-	reducer: { user: userReducer, rifas: rifasReducer },
+	reducer: { user: userReducer, rifas: rifasReducer, buyRifas: buyReducer },
 });
 
 export type AppDispatch = typeof store.dispatch;

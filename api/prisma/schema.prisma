@@ -42,7 +42,8 @@ model Seat {
   id        Int       @id @default(autoincrement())
 
   seat      Int
-  state     String
+  pago      Boolean   @default(false)
+  name      String?
   rifa      Rifa      @relation(fields: [rifaId], references: [id], onDelete: Cascade)
   rifaId    Int       @map("rifa_id")  
 
@@ -58,6 +59,8 @@ model Rifa {
 
   name      String    @db.VarChar(100)
   end       DateTime  @db.Timestamp(0)
+
+  price     Int       @default(0)
 
   seats     Seat[]
 

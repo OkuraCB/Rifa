@@ -22,11 +22,11 @@ export const ConfirmationDialog = ({
 
 	return (
 		<Dialog open={open} onClose={handleClose}>
-			<DialogTitle>Confirmation Dialog</DialogTitle>
-			<DialogContent>It's ok to proceed?</DialogContent>
+			<DialogTitle>Confirmação</DialogTitle>
+			<DialogContent>Gostaria de continuar?</DialogContent>
 			<DialogActions>
-				<Button onClick={handleClose}>Cancel</Button>
-				<Button onClick={executeFunction}>Confirm</Button>
+				<Button onClick={handleClose}>Cancelar</Button>
+				<Button onClick={executeFunction}>Confirmar</Button>
 			</DialogActions>
 		</Dialog>
 	);

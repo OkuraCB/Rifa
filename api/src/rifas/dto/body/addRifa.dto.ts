@@ -12,4 +12,8 @@ export class AddRifaDto {
   @IsNotEmpty({ message: 'Seats should not be empty' })
   @IsNumber()
   seats: number;
+
+  @IsNotEmpty({ message: 'Price should not be empty' })
+  @IsNumber()
+  price: number;
 }

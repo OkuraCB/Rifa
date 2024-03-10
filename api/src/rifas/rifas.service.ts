@@ -7,7 +7,7 @@ export class RifasService {
   constructor(private prisma: PrismaService) {}
 
   async list() {
-    const rifas = this.prisma.rifa.findMany({ include: { seats: true } });
+    const rifas = await this.prisma.rifa.findMany({ include: { seats: true } });
 
     if (!rifas) return [];
 
@@ -16,7 +16,7 @@ export class RifasService {
 
   async add(body: AddRifaDto) {
     const rifa = await this.prisma.rifa.create({
-      data: { name: body.name, end: body.end },
+      data: { name: body.name, end: body.end, price: body.price },
     });
 
     const seats = [];
@@ -26,7 +26,6 @@ export class RifasService {
         this.prisma.seat.create({
           data: {
             seat: index + 1,
-            state: 'free',
             rifa: { connect: { id: rifa.id } },
           },
         }),

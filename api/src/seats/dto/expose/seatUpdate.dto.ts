@@ -1,22 +1,13 @@
 import { Expose, Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
-import { SeatDto } from 'src/seats/dto/expose/seat.dto';
+import { SeatDto } from './seat.dto';
 
-export class RifaDto {
+export class SeatUpdateDto {
   @Expose()
-  id: number;
-
-  @Expose()
-  name: string;
-
-  @Expose()
-  end: Date;
+  rifaId: number;
 
   @Expose()
   @Type(() => SeatDto)
   @ValidateNested({ each: true })
   seats: SeatDto[];
-
-  @Expose()
-  price: number;
 }

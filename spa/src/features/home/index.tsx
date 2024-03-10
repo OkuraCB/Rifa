@@ -1,76 +1,51 @@
+import { Grid, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { Card, CardContent, Fab, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { listRifas, selectRifas } from "./homeSlice";
-import AddIcon from "@mui/icons-material/Add";
-import { CreateRifa } from "./create";
+import { WindupChildren, Pace } from "windups";
+import HomePage from "../../assets/homepage.png";
 
 export const Home = () => {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const [createModal, setCreateModal] = useState<boolean>(false);
-	const closeCreateModal = () => {
-		setCreateModal(false);
-	};
-
-	useEffect(() => {
-		dispatch(listRifas());
-	}, []);
-
-	const countFree = (data: any) => {
-		const seats = data.seats;
-		return seats.filter((seat: any) => seat.state === "free").length;
-	};
-
-	const rifas = useAppSelector(selectRifas);
-
 	return (
-		<>
-			<Grid
-				container
-				spacing={2}
-				paddingTop={2}
-				flexDirection="column"
-				justifyContent="center"
-				alignContent="center">
-				{rifas.map((rifa) => (
-					<Grid item xs={12}>
-						<Card>
-							<CardContent>
-								<Typography variant="h5" gutterBottom>
-									<strong>Nome:</strong> {rifa.name}
-								</Typography>
-								<Typography variant="h5" gutterBottom>
-									<strong>Fim:</strong> {(rifa.end as unknown as string).split("T")[0]}
-								</Typography>
-								<Typography variant="h5" gutterBottom>
-									<strong>Espaços:</strong> {countFree(rifa)}
-								</Typography>
-							</CardContent>
-						</Card>
+		<Grid container spacing={2} padding={4} flexDirection="row">
+			<Grid container item xs={6} flexDirection="column" justifyContent="center">
+				<Grid item>
+					<WindupChildren>
+						<Pace getPace={() => 60}>
+							<span style={{ fontSize: 60 }}>Rifas Illa</span>
+						</Pace>
+					</WindupChildren>
+				</Grid>
+				<Grid item>
+					<span>Um sistema para gerenciar as rifas da</span>{" "}
+					<span style={{ color: "violet", fontWeight: "bold" }}>mamãe</span>
+				</Grid>
+				<Grid
+					container
+					item
+					flexDirection="row"
+					justifyContent="space-evenly"
+					paddingTop={5}>
+					<Grid item>
+						<Button variant="contained" onClick={() => navigate("/buy")}>
+							Comprar uma Rifa
+						</Button>
 					</Grid>
-				))}
-
-				<Fab
-					color="primary"
-					style={{
-						margin: 0,
-						top: "auto",
-						right: 20,
-						bottom: 20,
-						left: "auto",
-						position: "fixed",
-					}}
-					onClick={() => {
-						setCreateModal(true);
-					}}>
-					<AddIcon />
-				</Fab>
+					<Grid item>
+						<Button
+							variant="contained"
+							color="secondary"
+							onClick={() => navigate("/login")}>
+							Gerenciar Rifas
+						</Button>
+					</Grid>
+				</Grid>
 			</Grid>
-
-			<CreateRifa open={createModal} onClose={closeCreateModal} />
-		</>
+			<Grid container xs={6} flexDirection="column" alignContent="center">
+				<Grid item>
+					<img src={HomePage} alt="tickets" />
+				</Grid>
+			</Grid>
+		</Grid>
 	);
 };
