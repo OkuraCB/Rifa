@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { Payload } from "../../routes";
-import { login } from "../../api/users/login";
-import { login as reduxLogin } from "../users/usersSlice";
 import { Box, Button, Container, Grid, LinearProgress, TextField } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../api/users/login";
+import { useAppDispatch } from "../../app/hooks";
+import { Payload } from "../../routes";
+import { login as reduxLogin } from "../users/usersSlice";
 
 export const Login = () => {
 	const [email, setEmail] = useState<string>("");
@@ -87,7 +87,7 @@ export const Login = () => {
 							<Button
 								variant="contained"
 								size="large"
-								onClick={() => navigate("/home")}
+								onClick={() => navigate("/")}
 								color="secondary">
 								Voltar
 							</Button>
