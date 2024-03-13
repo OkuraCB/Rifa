@@ -75,7 +75,7 @@ export const Buy = () => {
 						left: "auto",
 						position: "fixed",
 					}}
-					onClick={() => navigate("/home")}>
+					onClick={() => navigate("/")}>
 					<ArrowBack />
 				</Fab>
 			</Grid>
