@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => {
 		define: {
 			"process.env": env,
 		},
+		server: {
+			https: {},
+		},
 		plugins: [react()],
 	};
 });
