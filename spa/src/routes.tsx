@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { isBefore } from "date-fns";
+import { jwtDecode } from "jwt-decode";
 import {
-	Routes,
-	Route,
 	Location,
+	Navigate,
+	Route,
+	Routes,
 	useLocation,
 	useSearchParams,
-	Navigate,
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { login, selectUser } from "./features/users/usersSlice";
-import { jwtDecode } from "jwt-decode";
-import { isBefore } from "date-fns";
-import { Login } from "./features/login";
-import { DefaultLayout } from "./layout/default.layout";
-import { Home } from "./features/home";
-import { Rifas } from "./features/rifas";
 import { Buy } from "./features/buy";
+import { Home } from "./features/home";
+import { Login } from "./features/login";
+import { Rifas } from "./features/rifas";
+import { login, selectUser } from "./features/users/usersSlice";
+import { DefaultLayout } from "./layout/default.layout";
 
 export interface Payload {
 	exp: number;
@@ -27,7 +27,7 @@ export interface Payload {
 export const AppRoutes = () => {
 	return (
 		<Routes>
-			<Route path="/home" element={<Home />} />
+			<Route path="/" element={<Home />} />
 			<Route path="/buy" element={<Buy />} />
 			<Route
 				element={
@@ -42,8 +42,7 @@ export const AppRoutes = () => {
 					<RequireAuth>
 						<DefaultLayout />
 					</RequireAuth>
-				}
-				path="/">
+				}>
 				<Route path="/rifas" element={<Rifas />} />
 			</Route>
 		</Routes>
