@@ -19,20 +19,14 @@ export class RifasService {
       data: { name: body.name, end: body.end, price: body.price },
     });
 
-    const seats = [];
-
     for (let index = 0; index < body.seats; index++) {
-      seats.push(
-        this.prisma.seat.create({
-          data: {
-            seat: index + 1,
-            rifa: { connect: { id: rifa.id } },
-          },
-        }),
-      );
+      await this.prisma.seat.create({
+        data: {
+          seat: index + 1,
+          rifa: { connect: { id: rifa.id } },
+        },
+      });
     }
-
-    await Promise.all(seats);
 
     return await this.prisma.rifa.findFirst({
       where: { id: rifa.id },
