@@ -13,7 +13,6 @@ model Token {
   createdAt DateTime? @default(now()) @map("create_time") @db.Timestamp(0)
   updatedAt DateTime? @map("update_time") @db.Timestamp(0)
 
-  active    Boolean   @default(true)
   token   String    @db.VarChar(3000)
 
   userId    Int       @map("user_id")
