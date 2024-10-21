@@ -112,25 +112,25 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
   return children;
 };
 
-const RequireAccess = ({
-  children,
-  roles,
-}: {
-  children: JSX.Element;
-  roles: any;
-}) => {
-  const user = useAppSelector(selectUser);
-  const location = useLocation();
-  roles.map((role: any) => {
-    if (user.role !== role)
-      return (
-        <Navigate
-          to={`/unauthorized?redirect=${encodeURIComponent(location.pathname)}`}
-          state={{ from: location }}
-          replace
-        />
-      );
-  });
+// const RequireAccess = ({
+//   children,
+//   roles,
+// }: {
+//   children: JSX.Element;
+//   roles: any;
+// }) => {
+//   const user = useAppSelector(selectUser);
+//   const location = useLocation();
+//   roles.map((role: any) => {
+//     if (user.role !== role)
+//       return (
+//         <Navigate
+//           to={`/unauthorized?redirect=${encodeURIComponent(location.pathname)}`}
+//           state={{ from: location }}
+//           replace
+//         />
+//       );
+//   });
 
-  return children;
-};
+//   return children;
+// };
