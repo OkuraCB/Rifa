@@ -1,8 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { addOwnerApi } from "../../api/rifas/addOwner";
 import { listRifasApi } from "../../api/rifas/list";
 import { newRifaApi } from "../../api/rifas/new";
+import { removeOwnerApi } from "../../api/rifas/removeOwner";
 import { cancelSeatApi } from "../../api/seats/cancel";
 import { updateSeatApi } from "../../api/seats/update";
+import { searchUserApi } from "../../api/users/search";
 import { RootState } from "../../app/store";
 
 export interface Seat {
@@ -11,21 +14,36 @@ export interface Seat {
   pago: boolean;
   name: string;
 }
+export interface Owner {
+  id: number;
+  name: string;
+  email: string;
+}
 export interface Rifa {
   id: number;
   name: string;
   end: Date;
   seats: Seat[];
+  owners: Owner[];
   price: number;
+}
+
+export interface User {
+  id: any;
+  name: string;
+  email: string;
+  contact: string;
 }
 
 interface IInitial {
   rifas: Rifa[];
+  user: User;
   status: string;
 }
 
 const initialState: IInitial = {
   rifas: [],
+  user: { id: 0, name: "", email: "", contact: "" },
   status: "idle",
 };
 
@@ -51,6 +69,32 @@ export const cancelSeat = createAsyncThunk(
   "seats/cancelSeat",
   async (id: number | null) => {
     const res = await cancelSeatApi(id);
+    return res.data;
+  }
+);
+
+export const searchUser = createAsyncThunk(
+  "user/searchUser",
+  async (email: string) => {
+    const res = await searchUserApi(email);
+    return res.data;
+  }
+);
+
+export const resetUser = createAction("RESET_USER");
+
+export const addOwner = createAsyncThunk(
+  "rifas/addOwner",
+  async (data: any) => {
+    const res = await addOwnerApi({ ...data, rifaId: data.rifaId });
+    return res.data;
+  }
+);
+
+export const removeOwner = createAsyncThunk(
+  "rifas/removeOwner",
+  async (data: any) => {
+    const res = await removeOwnerApi({ ...data, rifaId: data.rifaId });
     return res.data;
   }
 );
@@ -114,9 +158,56 @@ export const rifasSlice = createSlice({
         );
         state.rifas[index].seats = payload.seats;
       });
+
+    builder
+      .addCase(addOwner.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(addOwner.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(addOwner.fulfilled, (state, { payload }: any) => {
+        state.status = "idle";
+
+        const index = state.rifas.findIndex((rifa) => rifa.id === payload.id);
+        state.rifas[index] = payload;
+      });
+
+    builder
+      .addCase(removeOwner.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(removeOwner.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(removeOwner.fulfilled, (state, { payload }: any) => {
+        state.status = "idle";
+
+        const index = state.rifas.findIndex((rifa) => rifa.id === payload.id);
+        console.log(index);
+        state.rifas[index] = payload;
+      });
+
+    builder
+      .addCase(searchUser.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(searchUser.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(searchUser.fulfilled, (state, { payload }: any) => {
+        state.status = "idle";
+        state.user = payload;
+      });
+
+    builder.addCase(resetUser, (state) => {
+      state.user = initialState.user;
+    });
   },
 });
 
+export const selectStatus = (state: RootState) => state.rifas.status;
 export const selectRifas = (state: RootState) => state.rifas.rifas;
+export const selectUser = (state: RootState) => state.rifas.user;
 
 export default rifasSlice.reducer;
