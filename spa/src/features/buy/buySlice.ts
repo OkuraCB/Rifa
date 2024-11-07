@@ -4,70 +4,78 @@ import { listRifasBuyApi } from "../../api/buy/listRifas";
 import { RootState } from "../../app/store";
 
 export interface Seat {
-	id: number;
-	seat: number;
-	pago: boolean;
-	name: string;
+  id: number;
+  seat: number;
+  pago: boolean;
+  name: string;
+}
+export interface Owner {
+  id: number;
+  name: string;
+  email: string;
 }
 export interface Rifa {
-	id: number;
-	name: string;
-	end: Date;
-	seats: Seat[];
-	price: number;
+  id: number;
+  name: string;
+  end: Date;
+  seats: Seat[];
+  owners: Owner[];
+  price: number;
 }
 
 interface IInitial {
-	rifas: Rifa[];
-	status: string;
+  rifas: Rifa[];
+  status: string;
 }
 
 const initialState: IInitial = {
-	rifas: [],
-	status: "idle",
+  rifas: [],
+  status: "idle",
 };
 
 export const listRifas = createAsyncThunk("buy/listRifas", async () => {
-	const res = await listRifasBuyApi();
-	return res.data;
+  const res = await listRifasBuyApi();
+  return res.data;
 });
 
 export const bookSeat = createAsyncThunk("buy/seat", async (data: any) => {
-	const res = await bookSeatApi(data);
-	return res.data;
+  const res = await bookSeatApi(data);
+  return res.data;
 });
 
 export const buySlice = createSlice({
-	name: "buy",
-	initialState,
-	reducers: {},
-	extraReducers: (builder) => {
-		builder
-			.addCase(listRifas.rejected, (state) => {
-				state.status = "idle";
-			})
-			.addCase(listRifas.pending, (state) => {
-				state.status = "pending";
-			})
-			.addCase(listRifas.fulfilled, (state, { payload }: any) => {
-				state.status = "idle";
-				state.rifas = payload;
-			});
+  name: "buy",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(listRifas.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(listRifas.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(listRifas.fulfilled, (state, { payload }: any) => {
+        state.status = "idle";
+        state.rifas = payload;
+      });
 
-		builder
-			.addCase(bookSeat.rejected, (state) => {
-				state.status = "idle";
-			})
-			.addCase(bookSeat.pending, (state) => {
-				state.status = "pending";
-			})
-			.addCase(bookSeat.fulfilled, (state, { payload }: any) => {
-				state.status = "idle";
+    builder
+      .addCase(bookSeat.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(bookSeat.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(bookSeat.fulfilled, (state, { payload }: any) => {
+        state.status = "idle";
 
-				const index = state.rifas.findIndex((rifa) => rifa.id === payload.rifaId);
-				state.rifas[index].seats = payload.seats;
-			});
-	},
+        const index = state.rifas.findIndex(
+          (rifa) => rifa.id === payload.rifaId
+        );
+        state.rifas[index].seats = payload.seats;
+      });
+  },
 });
 
 export const selectRifas = (state: RootState) => state.buyRifas.rifas;
