@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async create(user: CreateUserDto) {
-    const { name, email, password } = user;
+    const { name, email, password, contact } = user;
 
     const salt = await bcrypt.genSalt();
     const hashed = await bcrypt.hash(password, salt);
@@ -25,6 +25,7 @@ export class AuthService {
       name: name,
       email: email,
       password: hashed,
+      contact: contact,
     };
 
     return await this.prisma.user.create({ data: { ...newUser } });
@@ -41,7 +42,12 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials.');
     }
 
-    const payload = { sub: find.id, username: find.name };
+    const payload = {
+      sub: find.id,
+      username: find.name,
+      email: find.email,
+      role: find.role,
+    };
     const accessToken = await this.jwtService.sign(payload);
 
     const newToken = await this.prisma.token.create({

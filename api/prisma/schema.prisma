@@ -31,7 +31,11 @@ model User {
   name      String    @db.VarChar(100)
   email     String    @unique(map: "email_UNIQUE") @db.VarChar(300)
   password  String    @db.VarChar(300)
+  contact   String    @db.Text()
 
+  role      Roles     @default(USER)
+  
+  rifas     Rifa[]
   tokens    Token[]
 
   @@map("users")
@@ -56,6 +60,8 @@ model Rifa {
   createdAt DateTime  @default(now()) @map("create_time") @db.Timestamp(0)
   updatedAt DateTime? @map("update_time") @db.Timestamp(0)
 
+  owners    User[]    
+
   name      String    @db.VarChar(100)
   end       DateTime  @db.Timestamp(0)
 
@@ -64,4 +70,9 @@ model Rifa {
   seats     Seat[]
 
   @@map("rifas")
+}
+
+enum Roles {
+  ADMIN
+  USER
 }
